@@ -53,6 +53,19 @@ class FI{
 		});
 	}
 	
+	destroy(){
+		if(this.button){
+			this.button.removeEventListener('click', this.event_handlers.click);
+		}
+		if(this.dragarea){
+			all_drag_events.forEach(evt=>this.dragarea.removeEventListener(evt, this.event_handlers.dragevents));
+			dragover_events.forEach(evt=>this.dragarea.removeEventListener(evt, this.event_handlers.dragover));
+			dragend_events.forEach(evt=>this.dragarea.removeEventListener(evt, this.event_handlers.dragend));
+			drop_events.forEach(evt=>this.dragarea.removeEventListener(evt, this.event_handlers.drop));
+		}
+		this.hiddeninput.remove();
+	}
+	
 	generate_event_handlers(){
 		if(this.event_handlers !== null) return;
 		const onclick_handler = this.onclick_handler.bind(this);

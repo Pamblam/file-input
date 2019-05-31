@@ -1,6 +1,6 @@
 /**
  * file-input
- * Version 1.0.3
+ * Version 1.0.4
  */
 
 class FI{
@@ -51,6 +51,19 @@ class FI{
 			reader.onabort = ()=>reject('Aborted');
 			reader.readAsDataURL(file);
 		});
+	}
+	
+	destroy(){
+		if(this.button){
+			this.button.removeEventListener('click', this.event_handlers.click);
+		}
+		if(this.dragarea){
+			all_drag_events.forEach(evt=>this.dragarea.removeEventListener(evt, this.event_handlers.dragevents));
+			dragover_events.forEach(evt=>this.dragarea.removeEventListener(evt, this.event_handlers.dragover));
+			dragend_events.forEach(evt=>this.dragarea.removeEventListener(evt, this.event_handlers.dragend));
+			drop_events.forEach(evt=>this.dragarea.removeEventListener(evt, this.event_handlers.drop));
+		}
+		this.hiddeninput.remove();
 	}
 	
 	generate_event_handlers(){
@@ -179,7 +192,7 @@ class FI{
 	
 }
 
-FI.version = '1.0.3';
+FI.version = '1.0.4';
 
 FI.types = {
 	".3dm": [
