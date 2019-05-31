@@ -4,8 +4,40 @@
 		<title>file-input example</title>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<style>
+			.ddupload{
+				width: 300px;
+				height: 300px;
+				background-color: green;
+			}
+			.ddupload-hover{
+				background-color: red
+			}
+		</style>
 	</head>
 	<body>
+		<div id='dd' class='ddupload'></div>
 		<button id="fi-btn">Choose a file</button>
+		<div id='preview'></div>
+		<script src="../file-input.js"></script>
+		<script>
+			const btn = document.getElementById('fi-btn');
+			const da = document.getElementById('dd');
+			const prev = document.getElementById('preview');
+			
+			const fi = new FI({
+				button: btn,
+				accept: ["png", "jpg"],
+				dragarea: da,
+				dragenterclass: 'ddupload-hover'
+			});
+			
+			btn.addEventListener('fi-files-added', async function(e){
+				const file = e.detail.get_files()[0];
+				const uri = await e.detail.get_file_datauri(file);
+				prev.innerHTML = `<p>${file.name}</p><img src='${uri}'>`;
+			});
+			
+		</script>
 	</body>
 </html>

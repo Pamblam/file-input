@@ -1,5 +1,7 @@
 ### file-input 
 
-v. 1.0.2
+v. 1.0.3
 
-A work-in-progress sequel to [fileUpload](https://github.com/Pamblam/fileUpload) sans jQuery.
+The sequel to [fileUpload](https://github.com/Pamblam/fileUpload) sans jQuery.
+
+I'm too busy to write docs right now, but check out [the example](https://pamblam.github.io/file-input/example/).
