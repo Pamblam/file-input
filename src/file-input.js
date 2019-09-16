@@ -1671,6 +1671,9 @@ FI.types = {
 		"application/x-excel",
 		"application/x-msexcel"
 	],
+	".xlsx": [
+		"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+	],
 	".xlt": [
 		"application/excel",
 		"application/x-excel"

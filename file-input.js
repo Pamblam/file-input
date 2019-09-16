@@ -1,6 +1,6 @@
 /**
  * file-input
- * Version 1.0.4
+ * Version 1.0.5
  */
 
 class FI{
@@ -192,7 +192,7 @@ class FI{
 	
 }
 
-FI.version = '1.0.4';
+FI.version = '1.0.5';
 
 FI.types = {
 	".3dm": [
@@ -1670,6 +1670,9 @@ FI.types = {
 		"application/vnd.ms-excel",
 		"application/x-excel",
 		"application/x-msexcel"
+	],
+	".xlsx": [
+		"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 	],
 	".xlt": [
 		"application/excel",
