@@ -1,6 +1,6 @@
 /**
  * file-input
- * Version 1.0.5
+ * Version 1.0.6
  */
 
 class FI{
@@ -22,7 +22,7 @@ class FI{
 			this.attach_to_button(params.button);
 		}
 		if(params.dragarea){
-			this.attach_to_dragarea(params.dragarea, params.dragenterclass);
+			this.attach_to_dragarea(params.dragarea);
 		}
 	}
 	
@@ -54,6 +54,10 @@ class FI{
 	}
 	
 	destroy(){
+		var all_drag_events = ['drag', 'dragstart', 'dragend', 'dragover', 'dragenter', 'dragleave', 'drop'];
+		var dragover_events = ['dragover', 'dragenter'];
+		var dragend_events = ['dragleave', 'dragend', 'drop'];
+		var drop_events = ['drop'];
 		if(this.button){
 			this.button.removeEventListener('click', this.event_handlers.click);
 		}
@@ -99,12 +103,6 @@ class FI{
 		var dragover_events = ['dragover', 'dragenter'];
 		var dragend_events = ['dragleave', 'dragend', 'drop'];
 		var drop_events = ['drop'];
-		if(this.dragarea){
-			all_drag_events.forEach(evt=>this.dragarea.removeEventListener(evt, this.event_handlers.dragevents));
-			dragover_events.forEach(evt=>this.dragarea.removeEventListener(evt, this.event_handlers.dragover));
-			dragend_events.forEach(evt=>this.dragarea.removeEventListener(evt, this.event_handlers.dragend));
-			drop_events.forEach(evt=>this.dragarea.removeEventListener(evt, this.event_handlers.drop));
-		}
 		this.dragarea = dragarea;
 		if(this.dragarea){
 			all_drag_events.forEach(evt=>this.dragarea.addEventListener(evt, this.event_handlers.dragevents));
@@ -192,7 +190,7 @@ class FI{
 	
 }
 
-FI.version = '1.0.5';
+FI.version = '1.0.6';
 
 FI.types = {
 	".3dm": [

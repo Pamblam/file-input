@@ -1,6 +1,6 @@
 ## file-input.js
 
-v. 1.0.5
+v. 1.0.6
 
 A javascript library to simplify client-side handling of user-inputted files. file-input is the sequel to [fileUpload](https://github.com/Pamblam/fileUpload) sans jQuery. Check out [the example](https://pamblam.github.io/file-input/example/) and it's [source code](https://github.com/Pamblam/file-input/blob/master/example/index.html#L23).
 
