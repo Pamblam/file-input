@@ -192,6 +192,16 @@ class FI{
 
 FI.version = '{{ VERSION }}';
 
+FI.addMimeType = function(ext, mimetypes){
+	ext = ext.toLowerCase().trim();
+	if(ext.substr(0, 1) !== '.') ext = "." + ext;
+	if(!FI.types[ext]) FI.types[ext] = [];
+	if(!Array.isArray(mimetypes)) mimetypes = [mimetypes];
+	mimetypes.forEach(type=>{
+		FI.types[ext].push(type.trim());
+	});
+};
+
 FI.types = {
 	".3dm": [
 		"x-world/x-3dmf"
@@ -396,6 +406,9 @@ FI.types = {
 	".css": [
 		"application/x-pointplus",
 		"text/css"
+	],
+	".csv": [
+		"text/csv"
 	],
 	".cxx": [
 		"text/plain"

@@ -1,6 +1,7 @@
+
 ## file-input.js
 
-v. 1.0.6
+v. 1.0.7
 
 A javascript library to simplify client-side handling of user-inputted files. file-input is the sequel to [fileUpload](https://github.com/Pamblam/fileUpload) sans jQuery. Check out [the example](https://pamblam.github.io/file-input/example/) and it's [source code](https://github.com/Pamblam/file-input/blob/master/example/index.html#L23).
 
@@ -95,7 +96,19 @@ btn.addEventListener('fi-files-added', async function(e){
 
 #### Extensions
 
-file-input recognises these extneions out of the box.
+You can add support for any extentions that are not recognised out of the box with the static method: `FI.addMimeType`:
+
+```js
+var extention = '.xxx';
+var mimeType = 'text/xxx';
+FI.addMimeType(extention, mimeType);
+
+const fi = new FI({
+	accept: ["xxx"]
+});
+```
+
+file-input recognizes these extentions out of the box.
 
 
 | Extension | Content-Type |
@@ -158,6 +171,7 @@ file-input recognises these extneions out of the box.
 | **.crt** | application/pkix-cert<br>application/x-x509-ca-cert<br>application/x-x509-user-cert |
 | **.csh** | application/x-csh<br>text/x-script.csh |
 | **.css** | application/x-pointplus<br>text/css |
+| **.csv** | text/csv |
 | **.cxx** | text/plain |
 | **.dcr** | application/x-director |
 | **.deepv** | application/x-deepv |
