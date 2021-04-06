@@ -117,7 +117,7 @@ class FI{
 		this.files.push(...e.target.files);
 		var event = new CustomEvent('fi-files-added', {detail: this});
 		if(this.dragarea) this.dragarea.dispatchEvent(event);
-		if(this.button) this.button.dispatchEvent(event);
+		if(this.button && (!this.dragarea || this.dragarea !== this.button)) this.button.dispatchEvent(event);
 	}
 	
 	onclick_handler(e){

@@ -1,6 +1,6 @@
 /**
  * file-input
- * Version 1.0.7
+ * Version 1.0.8
  */
 
 class FI{
@@ -117,7 +117,7 @@ class FI{
 		this.files.push(...e.target.files);
 		var event = new CustomEvent('fi-files-added', {detail: this});
 		if(this.dragarea) this.dragarea.dispatchEvent(event);
-		if(this.button) this.button.dispatchEvent(event);
+		if(this.button && (!this.dragarea || this.dragarea !== this.button)) this.button.dispatchEvent(event);
 	}
 	
 	onclick_handler(e){
@@ -190,7 +190,7 @@ class FI{
 	
 }
 
-FI.version = '1.0.7';
+FI.version = '1.0.8';
 
 FI.addMimeType = function(ext, mimetypes){
 	ext = ext.toLowerCase().trim();
