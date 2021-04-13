@@ -1,6 +1,6 @@
 /**
  * file-input
- * Version 1.0.9
+ * Version 1.0.10
  */
 
 class FI{
@@ -154,6 +154,7 @@ class FI{
 		inpt.style.zIndex = '-99999999';
 		inpt.style.opacity = '0';
 		inpt.style.position = 'absolute';
+		inpt.style.display = 'none';
 		if(this.multi) inpt.setAttribute('multiple', 'multiple');
 		this.hiddeninput = inpt;
 		var referenceNode = this.button || this.dragarea || null;
@@ -190,7 +191,7 @@ class FI{
 	
 }
 
-FI.version = '1.0.9';
+FI.version = '1.0.10';
 
 FI.addMimeType = function(ext, mimetypes){
 	ext = ext.toLowerCase().trim();

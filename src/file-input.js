@@ -154,6 +154,7 @@ class FI{
 		inpt.style.zIndex = '-99999999';
 		inpt.style.opacity = '0';
 		inpt.style.position = 'absolute';
+		inpt.style.display = 'none';
 		if(this.multi) inpt.setAttribute('multiple', 'multiple');
 		this.hiddeninput = inpt;
 		var referenceNode = this.button || this.dragarea || null;
