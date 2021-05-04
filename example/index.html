@@ -36,11 +36,8 @@
 				const file = e.detail.get_files()[0];
 				const uri = await e.detail.get_file_datauri(file);
 				prev.innerHTML = `<p>${file.name}</p><img src='${uri}'>`;
+				fi.clear_files();
 			});
-			
-			function alert_callback(){
-				alert('wtf bitchesz');
-			}
 			
 		</script>
 	</body>
