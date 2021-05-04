@@ -85,7 +85,7 @@ fi.destroy();
 Manually open the file chooser dialog. This is useful if you don't need a user-interface element and want to prompt the user to choose a file in another way, like from an existing image button on a text editor.
 
 ```js
-fi.openDialog();
+fi.open_dialog();
 ```
 
 #### `register_callback(fn)`
