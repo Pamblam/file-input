@@ -1,6 +1,6 @@
 /**
  * file-input
- * Version 1.0.10
+ * Version 1.0.12
  */
 
 class FI{
@@ -122,6 +122,10 @@ class FI{
 	
 	onclick_handler(e){
 		e.preventDefault();
+		this.openDialog();
+	}
+	
+	openDialog(){
 		this.hiddeninput.click();
 	}
 	
@@ -191,7 +195,7 @@ class FI{
 	
 }
 
-FI.version = '1.0.10';
+FI.version = '1.0.12';
 
 FI.addMimeType = function(ext, mimetypes){
 	ext = ext.toLowerCase().trim();

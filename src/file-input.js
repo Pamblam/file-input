@@ -122,6 +122,10 @@ class FI{
 	
 	onclick_handler(e){
 		e.preventDefault();
+		this.openDialog();
+	}
+	
+	openDialog(){
 		this.hiddeninput.click();
 	}
 	
