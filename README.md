@@ -1,7 +1,7 @@
 
 ## file-input.js
 
-v. 1.0.12
+v. 1.0.15
 
 A javascript library to simplify client-side handling of user-inputted files. file-input is the sequel to [fileUpload](https://github.com/Pamblam/fileUpload) sans jQuery. Check out [the example](https://pamblam.github.io/file-input/example/) and it's [source code](https://github.com/Pamblam/file-input/blob/master/example/index.html#L23).
 
@@ -80,12 +80,28 @@ Destroy the instance and all event listeners and DOM elements associated with it
 fi.destroy();
 ```
 
-#### `openDialog()`
+#### `open_dialog()`
 
 Manually open the file chooser dialog. This is useful if you don't need a user-interface element and want to prompt the user to choose a file in another way, like from an existing image button on a text editor.
 
 ```js
 fi.openDialog();
+```
+
+#### `register_callback(fn)`
+
+Register a function to be called when the user chooses a file. This is an alternative to using an event listener for cases when you're not using any DOM elements.
+
+```js
+fi.register_callback(fn);
+```
+
+#### `unregister_callback(fn)`
+
+Unregister a callback that was registered via `register_callback(fn)`. You must provide the same function that was passed to the register call.
+
+```js
+fi.unregister_callback(fn);
 ```
 
 #### Events

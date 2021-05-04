@@ -14,6 +14,7 @@ class FI{
 		this.hiddeninput = null;
 		this.event_handlers = null;
 		this.files = [];
+		this.registered_callbacks = [];
 		
 		this.generate_event_handlers();
 		this.accept_types(params.accept||[]);
@@ -70,6 +71,23 @@ class FI{
 		this.hiddeninput.remove();
 	}
 	
+	open_dialog(){
+		this.hiddeninput.click();
+	}
+	
+	register_callback(fn){
+		if(typeof fn !== 'function') return false;
+		this.registered_callbacks.push(fn);
+	}
+	
+	unregister_callback(fn){
+		var cbs = [];
+		this.registered_callbacks.forEach(cb=>{
+			if(cb !== fn) cbs.push(cb);
+		});
+		this.registered_callbacks = cbs;
+	}
+	
 	generate_event_handlers(){
 		if(this.event_handlers !== null) return;
 		const onclick_handler = this.onclick_handler.bind(this);
@@ -118,15 +136,12 @@ class FI{
 		var event = new CustomEvent('fi-files-added', {detail: this});
 		if(this.dragarea) this.dragarea.dispatchEvent(event);
 		if(this.button && (!this.dragarea || this.dragarea !== this.button)) this.button.dispatchEvent(event);
+		this.registered_callbacks.forEach(cb=>cb());
 	}
 	
 	onclick_handler(e){
 		e.preventDefault();
-		this.openDialog();
-	}
-	
-	openDialog(){
-		this.hiddeninput.click();
+		this.open_dialog();
 	}
 	
 	ondragevents_handler(e){
