@@ -9,7 +9,6 @@ class FI{
 		this.button = null;
 		this.dragarea = null;
 		this.dragenterclass = params.dragenterclass || null;
-		this.accept = [];
 		this.multi = params.multi || false;
 		this.hiddeninput = null;
 		this.event_handlers = null;
@@ -17,7 +16,8 @@ class FI{
 		this.registered_callbacks = [];
 		
 		this.generate_event_handlers();
-		this.accept_types(params.accept||[]);
+		this.accept = FI.accept_types(params.accept||[]);
+
 		this.build_input();
 		if(params.button){
 			this.attach_to_button(params.button);
@@ -71,6 +71,23 @@ class FI{
 		this.hiddeninput.remove();
 	}
 	
+	static async_open_dialog(multi, accept){
+		return new Promise(done=>{
+			accept = FI.accept_types(accept||[]);
+			let input = FI.create_input(multi, null, accept);
+			input.addEventListener('change', e=>{
+				let files = e.target.files;
+				input.remove();
+				done(files);
+			});
+			input.addEventListener("cancel", e=>{
+				input.remove();
+				done([]);
+			});
+			input.click();
+		});
+	}
+
 	open_dialog(){
 		this.hiddeninput.click();
 	}
@@ -166,24 +183,27 @@ class FI{
 		this.registered_callbacks.forEach(cb=>cb());
 	}
 	
-	build_input(){
-		if(this.hiddeninput) this.hiddeninput.remove();
+	static create_input(multi=false, referenceNode=null, accept=[]){
 		const inpt = document.createElement('input');
 		inpt.setAttribute('type', 'file');
-		inpt.setAttribute('accept', this.accept.join(", "));
+		inpt.setAttribute('accept', accept.join(", "));
 		inpt.style.zIndex = '-99999999';
 		inpt.style.opacity = '0';
 		inpt.style.position = 'absolute';
 		inpt.style.display = 'none';
-		if(this.multi) inpt.setAttribute('multiple', 'multiple');
-		this.hiddeninput = inpt;
-		var referenceNode = this.button || this.dragarea || null;
-		if(referenceNode) referenceNode.parentNode.insertBefore(this.hiddeninput, referenceNode.nextSibling);
-		else document.body.appendChild(this.hiddeninput);
+		if(multi) inpt.setAttribute('multiple', 'multiple');
+		if(referenceNode) referenceNode.parentNode.insertBefore(inpt, referenceNode.nextSibling);
+		else document.body.appendChild(inpt);
+		return inpt;
+	}
+
+	build_input(){
+		if(this.hiddeninput) this.hiddeninput.remove();
+		this.hiddeninput = FI.create_input(this.multi, this.button || this.dragarea || null, this.accept);
 		this.hiddeninput.addEventListener('change', this.event_handlers.change);
 	}
 	
-	accept_types(types=[]){
+	static accept_types(types=[]){
 		const accept = [];
 		types = types.map(t=>t.toLowerCase().trim());
 		for(let i=types.length; i--;){
@@ -206,7 +226,7 @@ class FI{
 				}
 			}
 		}
-		this.accept = Array.from(new Set(accept)).sort();
+		return Array.from(new Set(accept)).sort();
 	}
 	
 }

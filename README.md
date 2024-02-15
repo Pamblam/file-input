@@ -1,7 +1,7 @@
 
 ## file-input.js
 
-v. 1.0.16
+v. 1.0.19
 
 A javascript library to simplify client-side handling of user-inputted files. file-input is the sequel to [fileUpload](https://github.com/Pamblam/fileUpload) sans jQuery. Check out [the example](https://pamblam.github.io/file-input/example/) and it's [source code](https://github.com/Pamblam/file-input/blob/master/example/index.html#L23).
 
@@ -86,6 +86,14 @@ Manually open the file chooser dialog. This is useful if you don't need a user-i
 
 ```js
 fi.open_dialog();
+```
+
+#### `static async_open_dialog(multi=false)`
+
+Manually open a file chooser dialog and return a promise that resolves with the user's file selection (or an empty array if they click the cancel button). This method accepts a single boolean value that indicates whether or not multiple files are allowed.
+
+```js
+let files = await FI.async_open_dialog(true);
 ```
 
 #### `register_callback(fn)`
