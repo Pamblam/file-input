@@ -1,6 +1,6 @@
 {
 	"name": "file-input",
-	"version": "2.0.37",
+	"version": "2.0.38",
 	"description": "Create and manage file inputs and files",
 	"main": "dist/file-input.js",
 	"scripts": {
