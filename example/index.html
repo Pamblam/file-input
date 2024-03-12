@@ -16,29 +16,11 @@
 		</style>
 	</head>
 	<body>
+		<p>Select or drop a PNG or JPG file.</p>
 		<div id='dd' class='ddupload'></div>
 		<button id="fi-btn">Choose a file</button>
 		<div id='preview'></div>
-		<script src="../file-input.js"></script>
-		<script>
-			const btn = document.getElementById('fi-btn');
-			const da = document.getElementById('dd');
-			const prev = document.getElementById('preview');
-			
-			const fi = new FI({
-				button: btn,
-				accept: ["png", "jpg"],
-				dragarea: da,
-				dragenterclass: 'ddupload-hover'
-			});
-			
-			btn.addEventListener('fi-files-added', async function(e){
-				const file = e.detail.get_files()[0];
-				const uri = await e.detail.get_file_datauri(file);
-				prev.innerHTML = `<p>${file.name}</p><img src='${uri}'>`;
-				fi.clear_files();
-			});
-			
-		</script>
+		<script src="../dist/file-input.js" type="module"></script>
+		<script src="./index.js" type="module"></script>
 	</body>
 </html>

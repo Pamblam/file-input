@@ -1,11 +1,44 @@
 
 ## file-input.js
 
-v. 1.0.19
+v. 2.0.37
 
-A javascript library to simplify client-side handling of user-inputted files. file-input is the sequel to [fileUpload](https://github.com/Pamblam/fileUpload) sans jQuery. Check out [the example](https://pamblam.github.io/file-input/example/) and it's [source code](https://github.com/Pamblam/file-input/blob/master/example/index.html#L23).
+A javascript library to simplify client-side handling of user-inputted files.
 
-### Usage
+### Quickstart/Example usage
+
+The class is a default export as `FI` so it must be imported and used as a module.
+
+```html
+<script type='module' src='file-input.js'></script>
+```
+
+and then it can be used in other `type=module` scripts by importing it like this:
+
+```js
+import FI from '../dist/file-input.js';
+
+const button = document.getElementById('fi-btn');
+const dragarea = document.getElementById('dd');
+const prev = document.getElementById('preview');
+
+new FI({accept: ["png", "jpg"]})					// Create a file-input instance that accepts only PNG and JPG files
+	.attachToDragarea(dragarea, 'ddupload-hover') 	// Attach the input to the drag area and give it some styles on hover
+	.openOnClick(button) 							// Attach the input ot a button
+	.onFileSelect(async function(){ 				// Show the image when a file is selected
+		const file = this.getFile();
+		this.clearFiles();
+		const uri = await FI.getFileDataURI(file);
+		prev.innerHTML = `<p>${file.name}</p><img src='${uri}'>`;
+	})
+	.onBadFileDrop(function(files){					// If they drag and drop something that isn't a png or jpg
+		prev.innerHTML = `<p><i>${files[0].name}</i> is not an acceptable file type.</p>`;
+	});
+```
+
+You can see this example live [here](https://pamblam.github.io/file-input/example/).
+
+### Methods
 
 #### Constructor
 
@@ -13,25 +46,10 @@ Create an new instance of the file-input object.
 
 ```js
 const fi = new FI({
-	// The button that will open the file input
-	// dialog. Omit this if you only want a drag-and-drop
-	// interface.
-	button: btn,
-
 	// Any file extensions that you want to allow in 
 	// your file input or drag area. Omit this
 	// option to allow all files.
 	accept: ["png", "jpg"],
-
-	// An element in the DOM that will serve as
-	// the drag-and-drop area for your file input.
-	// Omit this option if you only want a button.
-	dragarea: da,
-
-	// A class that will be added to the drag area
-	// when the user drags a file over it. Omit this
-	// option if you only want a button.
-	dragenterclass: 'ddupload-hover',
 
 	// Allow the user to choose more than one file if set 
 	// to `true`. The default is `false`.
@@ -39,109 +57,122 @@ const fi = new FI({
 });
 ```
 
-#### `get_files()`
+#### `getFile()`
 
-Get an array of files (blobs) in the input.
-
-```js
-var files = fi.get_files();
-```
-
-#### `get_file_text(file)`
-
-Get a promise that resolves with the raw text of a file.
+Get the first file (Blob) selected by the user.
 
 ```js
-var file_text = await fi.get_file_text(files[0]);
+var files = fi.getFile();
 ```
 
-#### `get_file_datauri(file)`
+#### `getFiles()`
 
-Get a promise that resolves with a data URL of a file.
+Get an array of files (blobs) selected by the user.
 
 ```js
-var datauri = await fi.get_file_text(files[0]);
-div.innerHTML = `<img src='${datauri}'>`;
+var files = fi.getFiles();
 ```
 
-#### `clear_files()`
+#### `clearFiles()`
 
-Remove all the files currently in the input.
+Clear all the user-selected files from the instance. This method is chainable as it returns the class instance.
 
 ```js
-fi.clear_files();
+fi.clearFiles();
 ```
 
-#### `destroy()`
+#### `onFileSelect(Function)`
 
-Destroy the instance and all event listeners and DOM elements associated with it so that it can be fully garbage collected.
+Register a callback function that will be called whenever files are added. Callbacks are bound to the class instance. The callback may be removed from the instance by passing it to `fi.offFileSelect(fn)`. This method is chainable as it returns the class instance.
+
+```js
+fi.onFileSelect(function(){
+	console.log(this.getFiles());
+});
+```
+
+#### `onBadFileDrop(Function)`
+
+Register a callback function that will be called whenever a file is dropped that does not match the acceptable file types. Callbacks are bound to the class instance. The callback may be removed from the instance by passing it to `fi.offBadFileDrop(fn)`. This method is chainable as it returns the class instance.
+
+```js
+fi.onBadFileDrop(function(){
+	alert(`${this.getFile().name} is not an acceptable file type.`);
+});
+```
+
+#### `async open()`
+
+Open the browser's file-select dialog and let the user choose a file (or files, if the `multi` option is set to `true`). The function resolves with an array of files that the user chose, which is not necessarily all the files in the input currently. If the user closes the dialog without selecting anything, the array will be empty.
+
+```js
+var files = await fi.open();
+```
+
+#### `attachToDragarea(Element, String|Object)`
+
+Given an element as the first argument, it will allow the user drag and drop file(s) over that element to add them to the instance. If the second argument is given and it is a string, it will be added as a class name to the element while user is dragging into it, and removed when the drag operation is completed. If the second parameter is given and it is an object, all properties of that object will be added to the element during the drag operation. This method is chainable as it returns the class instance.
+
+```js
+fi.attachToDragarea(document.getElementById('drag-area'), 'dragarea-hover');
+// or...
+fi.attachToDragarea(document.getElementById('drag-area'), {backgroundColor:'red'});
+// or... (second paramter is optional)
+fi.attachToDragarea(document.getElementById('drag-area'));
+```
+
+### `openOnClick(Element)`
+
+This is a convenience function that adds an onClick event listener to the element, which opens the file-chooser dialog when the element is clicked. This method is chainable as it returns the class instance.
+
+```js
+fi.openOnClick(document.getElementById('file-chooser-button'));
+```
+
+### `destroy()`
+
+Remove all event listeners, detach all drag areas and clickables, and reset the instance to it's just-initialized state so that it can be safely garbage collected.
 
 ```js
 fi.destroy();
 ```
 
-#### `open_dialog()`
+### `static addMimeType(String, String|Array)`
 
-Manually open the file chooser dialog. This is useful if you don't need a user-interface element and want to prompt the user to choose a file in another way, like from an existing image button on a text editor.
-
-```js
-fi.open_dialog();
-```
-
-#### `static async_open_dialog(multi=false)`
-
-Manually open a file chooser dialog and return a promise that resolves with the user's file selection (or an empty array if they click the cancel button). This method accepts a single boolean value that indicates whether or not multiple files are allowed.
-
-```js
-let files = await FI.async_open_dialog(true);
-```
-
-#### `register_callback(fn)`
-
-Register a function to be called when the user chooses a file. This is an alternative to using an event listener for cases when you're not using any DOM elements.
-
-```js
-fi.register_callback(fn);
-```
-
-#### `unregister_callback(fn)`
-
-Unregister a callback that was registered via `register_callback(fn)`. You must provide the same function that was passed to the register call.
-
-```js
-fi.unregister_callback(fn);
-```
-
-#### Events
-
-When a file is added, a	`fi-files-added` event will be fired on both the button
-and the dragarea elements, if they exist. The file-input object will be attached
-to the event's `detail` property.
-
-```js
-btn.addEventListener('fi-files-added', async function(e){
-	const file = e.detail.get_files()[0];
-	const uri = await e.detail.get_file_datauri(file);
-	prev.innerHTML = `<p>${file.name}</p><img src='${uri}'>`;
-});
-```
-
-#### Extensions
-
-You can add support for any extentions that are not recognised out of the box with the static method: `FI.addMimeType`:
+Add support for file types that are not recognised out of the box with this method by passing the file extention as the first argument and the mime type string as the second. Alternativelty, the second argument may be an array of mime-type strings.
 
 ```js
 var extention = '.xxx';
 var mimeType = 'text/xxx';
 FI.addMimeType(extention, mimeType);
 
-const fi = new FI({
+var fi = new FI({
 	accept: ["xxx"]
 });
 ```
 
-file-input recognizes these extentions out of the box.
+### `static async getFileText(File)`
 
+Given a file, this static method will resolve with the raw text of the file.
+
+```js
+var file = fi.getFile();
+var text = await FI.getFileText(file);
+```
+
+### `static async getFileDataURI(File)`
+
+Given a file, this static method will resolve with a DataURI of the file.
+
+```js
+var file = fi.getFile();
+var uri = await FI.getFileDataURI(file);
+div.innerHTML = `<img src='${datauri}'>`;
+```
+
+#### File Types and Extentions
+
+File-input recognizes these extentions out of the box.
 
 | Extension | Content-Type |
 |-------|-------|
