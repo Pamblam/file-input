@@ -204,9 +204,9 @@ export default class FI{
 		this.#dragAreas.forEach(area=>{
 			this.#removeClassOrStyle(area.ele);
 			FI.#dragEvents.forEach(evt=>area.ele.removeEventListener(evt, this.#boundHandlers.dragEventHandler));
-			FI.#dragoverEvents.forEach(evt=>ele.removeEventListener(evt, this.#boundHandlers.dragoverEventHandler));
-			FI.#dragendEvents.forEach(evt=>ele.removeEventListener(evt, this.#boundHandlers.dragendEventHandler));
-			FI.#dropEvents.forEach(evt=>ele.removeEventListener(evt, this.#boundHandlers.dropEventHandler));
+			FI.#dragoverEvents.forEach(evt=>area.ele.removeEventListener(evt, this.#boundHandlers.dragoverEventHandler));
+			FI.#dragendEvents.forEach(evt=>area.ele.removeEventListener(evt, this.#boundHandlers.dragendEventHandler));
+			FI.#dropEvents.forEach(evt=>area.ele.removeEventListener(evt, this.#boundHandlers.dropEventHandler));
 		});
 		this.#files = [];
 		this.#callbacks = [];
