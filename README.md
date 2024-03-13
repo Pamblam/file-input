@@ -1,7 +1,7 @@
 
 ## file-input.js
 
-v. 2.1.43
+v. 2.1.44
 
 A javascript library to simplify client-side handling of user-inputted files.
 
