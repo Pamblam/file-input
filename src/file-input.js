@@ -198,7 +198,7 @@ export default class FI{
 	 * @returns undefined
 	 */
 	destroy(){
-		this.#attachedClickables.foreach(ele=>{
+		this.#attachedClickables.forEach(ele=>{
 			ele.removeEventListener('click', this.#boundHandlers.clickHandler);
 		});
 		this.#dragAreas.forEach(area=>{
