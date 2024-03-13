@@ -4,22 +4,16 @@
 		<title>file-input example</title>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<style>
-			.ddupload{
-				width: 300px;
-				height: 300px;
-				background-color: green;
-			}
-			.ddupload-hover{
-				background-color: red
-			}
-		</style>
 	</head>
-	<body>
-		<p>Select or drop a PNG or JPG file.</p>
-		<div id='dd' class='ddupload'></div>
-		<button id="fi-btn">Choose a file</button>
-		<div id='preview'></div>
+	<body style="font-family: Arial, sans-serif;">
+		
+		<div id='dd' style="border: 2px dashed black; background: lightgray; text-align:center; margin: 3em; padding: 3em;">
+			<p>Select or drop a PNG or JPG file.</p>
+			<button id="fi-btn">Choose a file</button>
+		</div>
+		
+		<div id='preview' style="max-width: 100%; width: 300px; margin: 0 auto; text-align: center;"></div>
+
 		<script src="../dist/file-input.js" type="module"></script>
 		<script src="./index.js" type="module"></script>
 	</body>

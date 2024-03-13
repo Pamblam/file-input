@@ -202,7 +202,7 @@ export default class FI{
 			ele.removeEventListener('click', this.#boundHandlers.clickHandler);
 		});
 		this.#dragAreas.forEach(area=>{
-			this.#removeClassOrStyle(area.ele, area.classOrStyles);
+			this.#removeClassOrStyle(area.ele);
 			FI.#dragEvents.forEach(evt=>area.ele.removeEventListener(evt, this.#boundHandlers.dragEventHandler));
 			FI.#dragoverEvents.forEach(evt=>ele.removeEventListener(evt, this.#boundHandlers.dragoverEventHandler));
 			FI.#dragendEvents.forEach(evt=>ele.removeEventListener(evt, this.#boundHandlers.dragendEventHandler));
@@ -283,14 +283,12 @@ export default class FI{
 
 	// Event handler for drag-over
 	#dragoverEventHandler(e){
-		let classOrStyles = this.#dragAreas.filter(a=>a.ele===e.currentTarget).pop().classOrStyles;
-		this.#addClassOrStyle(e.currentTarget, classOrStyles);
+		this.#addClassOrStyle(e.currentTarget);
 	}
 
 	// Event handler for when the drag is completed
 	#dragendEventHandler(e){
-		let classOrStyles = this.#dragAreas.filter(a=>a.ele===e.currentTarget).pop().classOrStyles;
-		this.#removeClassOrStyle(e.currentTarget, classOrStyles);
+		this.#removeClassOrStyle(e.currentTarget);
 	}
 
 	// Event handler for when a file is dropped
@@ -318,24 +316,32 @@ export default class FI{
 	 **********************************************************************/
 
 	// Remove a classname or set of style properties from an element
-	#removeClassOrStyle(ele, classOrStyles){
+	#removeClassOrStyle(ele){
+		let i = this.#dragAreas.reduce((a,c,i)=>c.ele===ele?i:a,-1);
+		let classOrStyles = this.#dragAreas[i].classOrStyles;
 		if('string' === typeof classOrStyles){
 			ele.classList.remove(classOrStyles);
 		}else if('object' === typeof classOrStyles){
 			Object.keys(classOrStyles).forEach(style=>{
-				ele.style[style] = null;
+				ele.style[style] = this.#dragAreas[i].s[style];
 			});
+			if(this.#dragAreas[i].s) delete this.#dragAreas[i].s;
 		}
 	}
 
 	// Add a classname or set of style properties to an element
-	#addClassOrStyle(ele, classOrStyles){
+	#addClassOrStyle(ele){
+		let i = this.#dragAreas.reduce((a,c,i)=>c.ele===ele?i:a,-1);
+		let classOrStyles = this.#dragAreas[i].classOrStyles;
 		if('string' === typeof classOrStyles){
 			ele.classList.add(classOrStyles);
 		}else if('object' === typeof classOrStyles){
+			let s = {};
 			Object.keys(classOrStyles).forEach(style=>{
+				s[style] = ele.style[style];
 				ele.style[style] = classOrStyles[style];
 			});
+			if(!this.#dragAreas[i].s) this.#dragAreas[i].s = s;
 		}
 	}
 

@@ -1,7 +1,7 @@
 
 ## file-input.js
 
-v. 2.0.38
+v. 2.1.43
 
 A javascript library to simplify client-side handling of user-inputted files.
 
@@ -88,7 +88,7 @@ fi.clearFiles();
 
 #### `onFileSelect(Function)`
 
-Register a callback function that will be called whenever files are added. Callbacks are bound to the class instance. The callback may be removed from the instance by passing it to `fi.offFileSelect(fn)`. This method is chainable as it returns the class instance.
+Register a callback function that will be called whenever files are added. The callback is not passed any arguments. Callbacks are bound to the class instance. The callback may be removed from the instance by passing it to `fi.offFileSelect(fn)`. This method is chainable as it returns the class instance.
 
 ```js
 fi.onFileSelect(function(){
@@ -98,11 +98,11 @@ fi.onFileSelect(function(){
 
 #### `onBadFileDrop(Function)`
 
-Register a callback function that will be called whenever a file is dropped that does not match the acceptable file types. Callbacks are bound to the class instance. The callback may be removed from the instance by passing it to `fi.offBadFileDrop(fn)`. This method is chainable as it returns the class instance.
+Register a callback function that will be called whenever a file is dropped that does not match the acceptable file types. The callback will be passed an array of the invalid files as the first and only argument. Callbacks are bound to the class instance. The callback may be removed from the instance by passing it to `fi.offBadFileDrop(fn)`. This method is chainable as it returns the class instance.
 
 ```js
-fi.onBadFileDrop(function(){
-	alert(`${this.getFile().name} is not an acceptable file type.`);
+fi.onBadFileDrop(function(files){
+	alert(`${files[0].name} is not an acceptable file type.`);
 });
 ```
 
@@ -126,7 +126,7 @@ fi.attachToDragarea(document.getElementById('drag-area'), {backgroundColor:'red'
 fi.attachToDragarea(document.getElementById('drag-area'));
 ```
 
-### `openOnClick(Element)`
+#### `openOnClick(Element)`
 
 This is a convenience function that adds an onClick event listener to the element, which opens the file-chooser dialog when the element is clicked. This method is chainable as it returns the class instance.
 
@@ -134,7 +134,7 @@ This is a convenience function that adds an onClick event listener to the elemen
 fi.openOnClick(document.getElementById('file-chooser-button'));
 ```
 
-### `destroy()`
+#### `destroy()`
 
 Remove all event listeners, detach all drag areas and clickables, and reset the instance to it's just-initialized state so that it can be safely garbage collected.
 
@@ -142,7 +142,7 @@ Remove all event listeners, detach all drag areas and clickables, and reset the 
 fi.destroy();
 ```
 
-### `static addMimeType(String, String|Array)`
+#### `static addMimeType(String, String|Array)`
 
 Add support for file types that are not recognised out of the box with this method by passing the file extention as the first argument and the mime type string as the second. Alternativelty, the second argument may be an array of mime-type strings.
 
@@ -156,7 +156,7 @@ var fi = new FI({
 });
 ```
 
-### `static async getFileText(File)`
+#### `static async getFileText(File)`
 
 Given a file, this static method will resolve with the raw text of the file.
 
@@ -165,7 +165,7 @@ var file = fi.getFile();
 var text = await FI.getFileText(file);
 ```
 
-### `static async getFileDataURI(File)`
+#### `static async getFileDataURI(File)`
 
 Given a file, this static method will resolve with a DataURI of the file.
 
@@ -175,7 +175,7 @@ var uri = await FI.getFileDataURI(file);
 div.innerHTML = `<img src='${datauri}'>`;
 ```
 
-#### File Types and Extentions
+### File Types and Extentions
 
 File-input recognizes these extentions out of the box.
 
