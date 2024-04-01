@@ -322,10 +322,12 @@ export default class FI{
 		if('string' === typeof classOrStyles){
 			ele.classList.remove(classOrStyles);
 		}else if('object' === typeof classOrStyles){
-			Object.keys(classOrStyles).forEach(style=>{
-				ele.style[style] = this.#dragAreas[i].s[style];
-			});
-			if(this.#dragAreas[i].s) delete this.#dragAreas[i].s;
+			if(this.#dragAreas[i].s){
+				Object.keys(classOrStyles).forEach(style=>{
+					ele.style[style] = this.#dragAreas[i].s[style];
+				});
+				delete this.#dragAreas[i].s;
+			}
 		}
 	}
 

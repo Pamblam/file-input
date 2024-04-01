@@ -20,6 +20,7 @@ let types = fs.readFileSync(`${APP_ROOT}/src/types.json`, 'utf8');
 let code = fs.readFileSync(`${APP_ROOT}/src/file-input.js`, 'utf8');
 code = code.replaceAll('{{ VERSION }}', package.version);
 code = code.replace('static #types = {};', `static #types = ${types};`);
+fs.writeFileSync(`${APP_ROOT}/dist/file-input.debug.js`, code);
 
 // Minify and write to file
 let min = UglifyJS.minify(code, {compress: {unused: false}});
