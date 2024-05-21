@@ -1,6 +1,6 @@
 /**
  * file-input
- * Version 2.1.47
+ * Version 2.1.48
  */
 
 export default class FI{
@@ -10,7 +10,7 @@ export default class FI{
 	 **********************************************************************/
 
 	// The version number
-	static version = '2.1.47';
+	static version = '2.1.48';
 
 	// Array of file types, from types.json
 	static #types = {
@@ -1688,19 +1688,25 @@ export default class FI{
 
 	/**
 	 * Open the hidden input
+	 * @param Boolean skipCallbacks - Skip any callbacks defined by onFileSelect()
 	 * @returns Promise - resolves after user selects a file, 
 	 * 			or closes the dialog without selecting a file.
 	 */
-	open(){
+	open(skipCallbacks=false){
 		return new Promise(resolve=>{
-			const handleNextChange = e => {
+			let handleNextChange, handleNextCancel;
+			handleNextChange = e => {
 				this.#files.push(...e.target.files);
 				this.#hiddenInput.removeEventListener('change', handleNextChange);
 				this.#hiddenInput.removeEventListener('cancel', handleNextCancel);
-				this.#callbacks.forEach(cb=>cb([...e.target.files]));
-				resolve();
+				let newFiles = [...e.target.files];
+				let event = this.#getFilePickedEvent(newFiles);
+				if(!skipCallbacks){
+					this.#callbacks.forEach(cb=>cb(event));
+				} 
+				resolve(newFiles);
 			};
-			const handleNextCancel = e => {
+			handleNextCancel = e => {
 				this.#hiddenInput.removeEventListener('change', handleNextChange);
 				this.#hiddenInput.removeEventListener('cancel', handleNextCancel);
 				resolve([]);
@@ -1846,8 +1852,9 @@ export default class FI{
 			}
 		});
 		if(validFiles.length){
+			let event = this.#getFilePickedEvent(validFiles, e.currentTarget);
 			this.#files.push(...validFiles);
-			this.#callbacks.forEach(cb=>cb());
+			this.#callbacks.forEach(cb=>cb(event));
 		}
 		if(invalidFiles.length){
 			this.#unacceptedCallbacks.forEach(cb=>cb(invalidFiles));
@@ -1857,6 +1864,20 @@ export default class FI{
 	/**********************************************************************
 	 * Private Methods ****************************************************
 	 **********************************************************************/
+
+	#getFilePickedEvent(newFiles, dragTarget){
+		let event = new CustomEvent('fi.added', {
+			bubbles: true,
+			detail: {
+				dragTarget, 
+				newFiles, 
+				context: this,
+				allFiles: this.#files
+			}
+		});
+		(dragTarget || document).dispatchEvent(event);
+		return event;
+	}
 
 	// Remove a classname or set of style properties from an element
 	#removeClassOrStyle(ele){

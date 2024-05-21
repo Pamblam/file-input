@@ -7,7 +7,8 @@ const prev = document.getElementById('preview');
 new FI({accept: ["png", "jpg"]})
 	.attachToDragarea(da, {border:'2px solid red'})
 	.openOnClick(btn)
-	.onFileSelect(async function(){
+	.onFileSelect(async function(e){
+		console.log(e.detail.dragTarget)
 		const file = this.getFile();
 		this.clearFiles();
 		const uri = await FI.getFileDataURI(file);
