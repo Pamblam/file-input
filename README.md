@@ -110,9 +110,9 @@ fi.onBadFileDrop(function(files){
 });
 ```
 
-#### `async open()`
+#### `async open(skipCallbacks=false)`
 
-Open the browser's file-select dialog and let the user choose a file (or files, if the `multi` option is set to `true`). The function resolves with an array of files that the user chose, which is not necessarily all the files in the input currently. If the user closes the dialog without selecting anything, the array will be empty.
+Open the browser's file-select dialog and let the user choose a file (or files, if the `multi` option is set to `true`). The function resolves with an array of files that the user chose, which is not necessarily all the files in the input currently. If the user closes the dialog without selecting anything, the array will be empty. If `skipCallbacks` is set to true, any callbacks declared with `onFileSelect` are not called.
 
 ```js
 var files = await fi.open();
