@@ -1,7 +1,7 @@
 
 ## file-input.js
 
-v. 2.1.49
+v. 2.1.51
 
 A javascript library to simplify client-side handling of user-inputted files.
 
@@ -91,8 +91,12 @@ fi.clearFiles();
 Register a callback function that will be called whenever files are added. The callback is not passed any arguments. Callbacks are bound to the class instance. The callback may be removed from the instance by passing it to `fi.offFileSelect(fn)`. This method is chainable as it returns the class instance.
 
 ```js
-fi.onFileSelect(function(){
-	console.log(this.getFiles());
+fi.onFileSelect(function(e){
+	console.log(e.detail.dragTarget) // The element that the files were dragged into, or undefined if not dragged
+	console.log(e.detail.newFiles) // All newly added files
+	console.log(e.detail.allFiles) // All current files in the FI instance
+	console.log(e.detail.context) // the FI instace (same as `this`)
+	console.log(this.getFiles()); // or e.detail.context.getFiles(), or e.detail.allFiles
 });
 ```
 
@@ -124,6 +128,14 @@ fi.attachToDragarea(document.getElementById('drag-area'), 'dragarea-hover');
 fi.attachToDragarea(document.getElementById('drag-area'), {backgroundColor:'red'});
 // or... (second paramter is optional)
 fi.attachToDragarea(document.getElementById('drag-area'));
+```
+
+#### `detachAllDragAreas()`
+
+Detaches any drag areas from the FI instance, and removes all event handlers.
+
+```js
+fi.detachAllDragAreas();
 ```
 
 #### `openOnClick(Element)`

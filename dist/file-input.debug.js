@@ -1,6 +1,6 @@
 /**
  * file-input
- * Version 2.1.49
+ * Version 2.1.51
  */
 
 export default class FI{
@@ -10,7 +10,7 @@ export default class FI{
 	 **********************************************************************/
 
 	// The version number
-	static version = '2.1.49';
+	static version = '2.1.51';
 
 	// Array of file types, from types.json
 	static #types = {
@@ -1718,6 +1718,20 @@ export default class FI{
 	}
 
 	/**
+	 * Detach and remove any existing dragareas
+	 */
+	detachAllDragAreas(){
+		this.#dragAreas.forEach(area=>{
+			this.#removeClassOrStyle(area.ele);
+			FI.#dragEvents.forEach(evt=>area.ele.removeEventListener(evt, this.#boundHandlers.dragEventHandler));
+			FI.#dragoverEvents.forEach(evt=>area.ele.removeEventListener(evt, this.#boundHandlers.dragoverEventHandler));
+			FI.#dragendEvents.forEach(evt=>area.ele.removeEventListener(evt, this.#boundHandlers.dragendEventHandler));
+			FI.#dropEvents.forEach(evt=>area.ele.removeEventListener(evt, this.#boundHandlers.dropEventHandler));
+		});
+		this.#dragAreas = [];
+	}
+
+	/**
 	 * Turn an element into a dragarea that will accept drag-and-drop files for this input
 	 * @param Element ele
 	 * @return this 
@@ -1750,18 +1764,11 @@ export default class FI{
 		this.#attachedClickables.forEach(ele=>{
 			ele.removeEventListener('click', this.#boundHandlers.clickHandler);
 		});
-		this.#dragAreas.forEach(area=>{
-			this.#removeClassOrStyle(area.ele);
-			FI.#dragEvents.forEach(evt=>area.ele.removeEventListener(evt, this.#boundHandlers.dragEventHandler));
-			FI.#dragoverEvents.forEach(evt=>area.ele.removeEventListener(evt, this.#boundHandlers.dragoverEventHandler));
-			FI.#dragendEvents.forEach(evt=>area.ele.removeEventListener(evt, this.#boundHandlers.dragendEventHandler));
-			FI.#dropEvents.forEach(evt=>area.ele.removeEventListener(evt, this.#boundHandlers.dropEventHandler));
-		});
+		this.detachAllDragAreas();
 		this.#files = [];
 		this.#callbacks = [];
 		this.#unacceptedCallbacks = [];
 		this.#attachedClickables = [];
-		this.#dragAreas = [];
 	}
 
 	/**
