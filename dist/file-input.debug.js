@@ -1,6 +1,6 @@
 /**
  * file-input
- * Version 2.1.48
+ * Version 2.1.49
  */
 
 export default class FI{
@@ -10,7 +10,7 @@ export default class FI{
 	 **********************************************************************/
 
 	// The version number
-	static version = '2.1.48';
+	static version = '2.1.49';
 
 	// Array of file types, from types.json
 	static #types = {
@@ -1596,10 +1596,10 @@ export default class FI{
 	 **********************************************************************/
 
 	constructor(params){
-		if(!!params.multi){
+		if(!!params?.multi){
 			this.#multi = true;
 		} 
-		if(Array.isArray(params.accept)){
+		if(Array.isArray(params?.accept)){
 			this.#accept = FI.#acceptTypes(params.accept);
 		}
 		this.#createInput();

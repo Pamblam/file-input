@@ -53,10 +53,10 @@ export default class FI{
 	 **********************************************************************/
 
 	constructor(params){
-		if(!!params.multi){
+		if(!!params?.multi){
 			this.#multi = true;
 		} 
-		if(Array.isArray(params.accept)){
+		if(Array.isArray(params?.accept)){
 			this.#accept = FI.#acceptTypes(params.accept);
 		}
 		this.#createInput();
